@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import AlamofireImage
 
 class DetalhesFilmeViewController: UIViewController {
     
@@ -35,36 +36,43 @@ class DetalhesFilmeViewController: UIViewController {
     
     //MARK: - Variaveis
     
-    var filmeSelecionado:Filme? = nil
+    var filmeSelecionado:FilmeModel?
+    
+    let viewModel: FilmeDetalhesViewModel = FilmeDetalhesViewModel()
     
     //MARK: - Funcoes
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
+        bind()
+        viewModel.loadMovie()
+        
         
         if let filme = filmeSelecionado {
             
-            labelTitulo.text = filme.titulo
-            labelNota.text = "\(filme.nota)"
-            labelTagline.text = filme.tagline
-            labelData.text = filme.data
-            labelBudget.text = filme.getBudgetFormatado()
-            labelRevenue.text = filme.getRevenueFormatado()
-            labelGenero.text = filme.generos
-            labelSinopse.text = filme.sinopse
+            labelTitulo.text = filme.title
+            labelNota.text = String(describing: filme.voteAverage)
             
-            if let imageUrl = FilmeAPI().gerarURLImagem(link: filme.caminhoImagemPoster){
-                    imagePoster.af_setImage(withURL: imageUrl)
-                
-                imagePoster.layer.shadowColor = UIColor.black.cgColor
-                imagePoster.layer.shadowOpacity = 1
-                imagePoster.layer.shadowOffset = .zero
-                imagePoster.layer.shadowRadius = 5
+            labelTagline.text = filme.tagline
+            labelData.text = filme.releaseDate
+            //labelBudget.text = filme.getBudgetFormatado()
+            //labelRevenue.text = filme.getRevenueFormatado()
+            //labelGenero.text = filme.generos
+            labelSinopse.text = filme.overview
+            
+            if let caminhoPoster = filme.posterPath {
+                if let imageUrl = FilmeAPI().gerarURLImagem(link: caminhoPoster) {
+                        imagePoster.af_setImage(withURL: imageUrl)
+                    }
             }
             
-            if let imageUrl = FilmeAPI().gerarURLImagem(link: filme.caminhoImagemBg) {
-                imageBackground.af_setImage(withURL: imageUrl)
+            if let caminhoBg = filme.backdropPath {
+                if let imageUrlBg = FilmeAPI().gerarURLImagem(link: caminhoBg) {
+                    imageBackground.af_setImage(withURL: imageUrlBg)
+                }
+                
             }
             
         }
@@ -75,9 +83,23 @@ class DetalhesFilmeViewController: UIViewController {
         
     }
     
+    func bind(){
+        viewModel.viewData.bind { (movieViewData) in
+            guard let `movieViewData` = movieViewData else { return }
+            self.labelTitulo.text = movieViewData.title
+        }
+    }
+    
     @IBAction func buttonFecharDetalhes(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
     
+}
+
+extension DetalhesFilmeViewController: DetalhesFilmeViewModelDelegate {
+    
+    func reloadData(filme: FilmeViewData) {
+        self.labelTitulo.text = filme.title
+    }
 }

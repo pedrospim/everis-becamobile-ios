@@ -9,7 +9,12 @@
 import UIKit
 import Alamofire
 
-class FilmeAPI: NSObject {
+
+protocol FilmeAPIProtocol {
+    func pegarDetalhesFilme(codFilme:Int, completion:@escaping(_ filme:FilmeModel) -> Void)
+}
+
+class FilmeAPI: FilmeAPIProtocol {
     
     // MARK: - GET
     
@@ -32,14 +37,19 @@ class FilmeAPI: NSObject {
         }
     }
     
-    func pegarDetalhesFilme(codFilme:Int, completion:@escaping(Dictionary<String,Any>) -> Void){
+    func pegarDetalhesFilme(codFilme:Int, completion:@escaping(_ filme:FilmeModel) -> Void){
         
         Alamofire.request("https://api.themoviedb.org/3/movie/\(codFilme)?api_key=bbed29429b1ca9848cd2e58686edc4cc&language=pt-BR", method: .get).responseJSON { (resposta) in
             switch resposta.result {
             case .success:
                 
-                if let respostaFinal = resposta.result.value as? Dictionary<String, Any> {
-                    completion(respostaFinal)
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: resposta.result.value!, options: []) else { return }
+                
+                do {
+                let filmeCodable = try JSONDecoder().decode(FilmeModel.self, from: jsonData)
+                completion(filmeCodable)
+                }catch{
+                    print(error)
                 }
                 
                 break

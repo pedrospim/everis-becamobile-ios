@@ -99,8 +99,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
         let controller = storyboard.instantiateViewController(withIdentifier: "detalhesFilme") as! DetalhesFilmeViewController
         
         FilmeAPI().pegarDetalhesFilme(codFilme: codigoFilme, completion: { (resposta) in
-            let filmeDetalhado = Filme(resposta)
-            controller.filmeSelecionado = filmeDetalhado
+            controller.filmeSelecionado = resposta
             self.navigationController?.pushViewController(controller, animated: true)
         })
         
