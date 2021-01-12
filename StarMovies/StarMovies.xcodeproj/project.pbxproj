@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4BC9749B9531299F7EE83F0D /* Pods_StarMovies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC12E5FF0B28BDC16847373 /* Pods_StarMovies.framework */; };
 		A281BAD725A76E86007FD0F4 /* Filme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A281BAD625A76E86007FD0F4 /* Filme.swift */; };
 		A281BADA25A7806D007FD0F4 /* estrela.png in Resources */ = {isa = PBXBuildFile; fileRef = A281BAD925A7806D007FD0F4 /* estrela.png */; };
 		A28BB9CF25A7662D006B5B37 /* DetalhesFilmeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28BB9CE25A7662D006B5B37 /* DetalhesFilmeViewController.swift */; };
@@ -49,7 +48,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BC9749B9531299F7EE83F0D /* Pods_StarMovies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,12 +79,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		A281BAD825A78060007FD0F4 /* Assets */ = {
+		A281BAD825A78060007FD0F4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				A281BAD925A7806D007FD0F4 /* estrela.png */,
 			);
-			path = Assets;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A28BB9C925A76578006B5B37 /* DetalhesFilme */ = {
@@ -134,7 +132,7 @@
 		A2E4B2A325A73E4700A86821 /* StarMovies */ = {
 			isa = PBXGroup;
 			children = (
-				A281BAD825A78060007FD0F4 /* Assets */,
+				A281BAD825A78060007FD0F4 /* Resources */,
 				A281BAD525A76E5B007FD0F4 /* Model */,
 				A28BB9C925A76578006B5B37 /* DetalhesFilme */,
 				A2E4B2B925A73EB800A86821 /* Filmes */,
