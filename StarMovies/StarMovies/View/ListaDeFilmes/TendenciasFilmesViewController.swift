@@ -19,11 +19,12 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     
     //MARK: - Variaveis
     
-    var listaTendenciaFilmes:Array<Dictionary<String, Any>> = []
+    var listaTendenciaFilmes:[ResultadoFilme] = []
     
     var paginaAtual = 1
     
     var buttonAnterior:UIButton?
+    let viewModel: TendenciasViewModel = TendenciasViewModel()
     
     //MARK: - LifeCycle
 
@@ -33,18 +34,23 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
         self.colecaoFilmes.dataSource = self
         self.colecaoFilmes.delegate = self
         
-        pegarTendencias()
+        
+        bind()
+        viewModel.loadTendencias(pagina: paginaAtual)
 
     }
     
     
-    func pegarTendencias(){
-        FilmeAPI().pegarListaTendenciasFilmes(pagina: paginaAtual) { (resposta) in
-            self.listaTendenciaFilmes = resposta
+    func bind(){
+        
+        viewModel.viewData.bind { (movieViewData) in
+            
+            guard let `movieViewData` = movieViewData else { return }
+            self.listaTendenciaFilmes = movieViewData.resultados
             self.colecaoFilmes.reloadData()
         }
+        
     }
-    
     //MARK: - CollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -54,8 +60,8 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let celula = collectionView.dequeueReusableCell(withReuseIdentifier: "celulaFilme", for: indexPath) as! FilmeCollectionViewCell
-        
-        celula.configurarCelula(Filme(listaTendenciaFilmes[indexPath.row]))
+        celula.bind()
+        celula.viewModel.setarViewData(filme: listaTendenciaFilmes[indexPath.row])
         celula.aplicarSombrar()
     
         return celula
@@ -69,6 +75,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
         let dimensaoDaTela = Int(height/width)
 
         if dimensaoDaTela < 2 {
+            
         return CGSize(width: width * 0.43, height: height * 0.43)
         }else{
         return CGSize(width: width * 0.43, height: height * 0.37)
@@ -93,8 +100,8 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     //MARK: - CollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let filmeDicionario = listaTendenciaFilmes[indexPath.item]
-        guard let codigoFilme = filmeDicionario["id"] as? Int else { return }
+        guard let codigoFilme = viewModel.viewData.value?.resultados[indexPath.item].id else { return }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "detalhesFilme") as! DetalhesFilmeViewController
 
@@ -105,7 +112,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     
     @IBAction func buttonIrParaAnterior(_ sender: UIButton) {
         paginaAtual = paginaAtual - 1
-        pegarTendencias()
+        viewModel.loadTendencias(pagina: paginaAtual)
         colecaoFilmes.setContentOffset(CGPoint(x:0,y:0), animated: true)
         
         if paginaAtual == 1 {
@@ -118,7 +125,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     @IBAction func buttonProximo(_ sender: UIButton) {
         
         paginaAtual = paginaAtual + 1
-        pegarTendencias()
+        viewModel.loadTendencias(pagina: paginaAtual)
         colecaoFilmes.setContentOffset(CGPoint(x:0,y:0), animated: true)
         
         buttonAnterior?.isHidden = false

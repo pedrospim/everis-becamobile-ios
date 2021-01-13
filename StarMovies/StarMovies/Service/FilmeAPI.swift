@@ -12,21 +12,27 @@ import Alamofire
 
 protocol FilmeAPIProtocol {
     func pegarDetalhesFilme(codFilme:Int, completion:@escaping(_ filme:FilmeModel) -> Void)
+    
+    func pegarListaTendenciasFilmes(pagina:Int, completion:@escaping(TendenciasModel) -> Void)
 }
 
 class FilmeAPI: FilmeAPIProtocol {
     
     // MARK: - GET
     
-    func pegarListaTendenciasFilmes(pagina:Int, completion:@escaping(Array<Dictionary<String, Any>>) -> Void) {
+    func pegarListaTendenciasFilmes(pagina:Int, completion:@escaping(TendenciasModel) -> Void) {
         
         Alamofire.request("https://api.themoviedb.org/3/trending/movie/week?api_key=bbed29429b1ca9848cd2e58686edc4cc&language=pt-BR&page=\(pagina)", method: .get).responseJSON { (resposta) in
             switch resposta.result {
             case .success:
                 
-                if let respostaFinal = resposta.result.value as? Dictionary<String, Any> {
-                    guard let listaDeFilmes = respostaFinal["results"] as? Array<Dictionary<String, Any>> else { return }
-                    completion(listaDeFilmes)
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: resposta.result.value!, options: []) else { return }
+                
+                do {
+                let tendencias = try JSONDecoder().decode(TendenciasModel.self, from: jsonData)
+                completion(tendencias)
+                }catch{
+                    print(error)
                 }
                 
                 break

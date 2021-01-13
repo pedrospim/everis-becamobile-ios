@@ -16,17 +16,27 @@ class FilmeCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var labelTituloFilme: UILabel!
     
+    //MARK: -- Variaveis
+    
+    var viewModel: FilmeCellViewModel = FilmeCellViewModel() 
+    
     //Mark: - Funcoes de configuracao
     
-    func configurarCelula(_ filme:Filme){
+    func bind(){
         
-        self.labelTituloFilme.text = filme.titulo
-        
-        if let urlImagem = FilmeAPI().gerarURLImagem(link: filme.caminhoImagemPoster) {
-            self.imageFilme.af_setImage(withURL: urlImagem)
+        viewModel.viewData.bind { (movieViewData) in
+            
+            guard let data = movieViewData else { return }
+            self.labelTituloFilme.text = data.title
+            
+            if let imgUrl = data.posterPath {
+                if let poster = FilmeAPI().gerarURLImagem(link: imgUrl){
+                    self.imageFilme.af_setImage(withURL: poster)
+                }
+            }
+            
         }
-        
-    }
+}
     
     func aplicarSombrar(){
         self.imageFilme.layer.shadowColor = UIColor.black.cgColor
