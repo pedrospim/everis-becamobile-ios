@@ -36,8 +36,7 @@ class DetalhesFilmeViewController: UIViewController {
     
     //MARK: - Variaveis
     
-    var filmeSelecionado:FilmeModel?
-    
+    var codFilme:Int?
     let viewModel: FilmeDetalhesViewModel = FilmeDetalhesViewModel()
     
     //MARK: - Funcoes
@@ -45,37 +44,12 @@ class DetalhesFilmeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.delegate = self
+        //viewModel.delegate = self
         bind()
-        viewModel.loadMovie()
-        
-        
-        if let filme = filmeSelecionado {
-            
-            labelTitulo.text = filme.title
-            labelNota.text = String(describing: filme.voteAverage)
-            
-            labelTagline.text = filme.tagline
-            labelData.text = filme.releaseDate
-            //labelBudget.text = filme.getBudgetFormatado()
-            //labelRevenue.text = filme.getRevenueFormatado()
-            //labelGenero.text = filme.generos
-            labelSinopse.text = filme.overview
-            
-            if let caminhoPoster = filme.posterPath {
-                if let imageUrl = FilmeAPI().gerarURLImagem(link: caminhoPoster) {
-                        imagePoster.af_setImage(withURL: imageUrl)
-                    }
-            }
-            
-            if let caminhoBg = filme.backdropPath {
-                if let imageUrlBg = FilmeAPI().gerarURLImagem(link: caminhoBg) {
-                    imageBackground.af_setImage(withURL: imageUrlBg)
-                }
-                
-            }
-            
+        if let id = codFilme {
+            viewModel.loadMovie(codFilme: id)
         }
+        
         
         labelGenero.adjustsFontSizeToFitWidth = true
         labelBudget.adjustsFontSizeToFitWidth = true
@@ -87,6 +61,21 @@ class DetalhesFilmeViewController: UIViewController {
         viewModel.viewData.bind { (movieViewData) in
             guard let `movieViewData` = movieViewData else { return }
             self.labelTitulo.text = movieViewData.title
+            self.labelNota.text = movieViewData.nota
+            self.labelTagline.text = movieViewData.tagline
+            self.labelRevenue.text = movieViewData.revenue
+            self.labelBudget.text = movieViewData.budget
+            self.labelSinopse.text = movieViewData.sinopse
+            self.labelGenero.text = movieViewData.generos
+            self.labelData.text = movieViewData.releaseDate
+            
+            if let imageUrlBg = FilmeAPI().gerarURLImagem(link: movieViewData.caminhoImagemBg) {
+                self.imageBackground.af_setImage(withURL: imageUrlBg)
+            }
+            
+            if let imageUrl = FilmeAPI().gerarURLImagem(link: movieViewData.caminhoImagemPoster) {
+                self.imagePoster.af_setImage(withURL: imageUrl)
+                }
         }
     }
     
@@ -97,9 +86,9 @@ class DetalhesFilmeViewController: UIViewController {
     
 }
 
-extension DetalhesFilmeViewController: DetalhesFilmeViewModelDelegate {
-    
-    func reloadData(filme: FilmeViewData) {
-        self.labelTitulo.text = filme.title
-    }
-}
+//extension DetalhesFilmeViewController: DetalhesFilmeViewModelDelegate {
+//
+//    func reloadData(filme: FilmeViewData) {
+//        self.labelTitulo.text = filme.title
+//    }
+//}

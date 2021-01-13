@@ -97,11 +97,9 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
         guard let codigoFilme = filmeDicionario["id"] as? Int else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "detalhesFilme") as! DetalhesFilmeViewController
-        
-        FilmeAPI().pegarDetalhesFilme(codFilme: codigoFilme, completion: { (resposta) in
-            controller.filmeSelecionado = resposta
+
+            controller.codFilme = codigoFilme
             self.navigationController?.pushViewController(controller, animated: true)
-        })
         
     }
     

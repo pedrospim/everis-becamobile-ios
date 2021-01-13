@@ -10,11 +10,13 @@ import Foundation
 
 protocol FilmeViewDataType {
     var title: String { get }
+    var tagline: String { get }
     var releaseDate: String { get }
     var budget: String { get }
     var revenue: String { get }
     var generos: String { get }
     var sinopse: String { get }
+    var nota: String { get }
     var caminhoImagemPoster : String { get }
     var caminhoImagemBg : String { get }
 }
@@ -30,6 +32,19 @@ class FilmeViewData : NSObject {
 }
 
 extension FilmeViewData : FilmeViewDataType {
+    
+    var tagline: String {
+        guard let tagline = model.tagline else {  return ""}
+        return tagline
+    }
+    
+    var nota: String {
+        guard var nota = model.voteAverage else { return "Desconhecido"}
+        nota = nota * 10
+        nota = Double(nota).rounded()
+        nota = nota / 10
+        return String(nota)
+    }
     
     var title: String {
         guard let titulo = model.title else { return ""}
@@ -53,7 +68,13 @@ extension FilmeViewData : FilmeViewDataType {
     }
     
     var generos: String {
-        return "Testando"
+        guard let generos = model.genres else { return ""}
+        var generosString = ""
+        for genero in generos {
+            guard let nomeGenero = genero.name else { return ""}
+            generosString.append("\(nomeGenero)  ")
+        }
+        return generosString
     }
     
     var sinopse: String {

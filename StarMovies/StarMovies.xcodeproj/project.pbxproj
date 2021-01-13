@@ -148,26 +148,10 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		A28BB9C925A76578006B5B37 /* DetalhesFilme */ = {
-			isa = PBXGroup;
-			children = (
-				A28BB9CB25A765B8006B5B37 /* View */,
-				A28BB9CA25A7657C006B5B37 /* Controller */,
-			);
-			path = DetalhesFilme;
-			sourceTree = "<group>";
-		};
-		A28BB9CA25A7657C006B5B37 /* Controller */ = {
+		A2DD63C825AF542C008B1FBB /* View */ = {
 			isa = PBXGroup;
 			children = (
 				A28BB9CE25A7662D006B5B37 /* DetalhesFilmeViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		A28BB9CB25A765B8006B5B37 /* View */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -194,9 +178,9 @@
 			isa = PBXGroup;
 			children = (
 				A2844A1725AE1C0800021540 /* Application */,
+				A2DD63C825AF542C008B1FBB /* View */,
 				A2844A1625AE1BF900021540 /* ViewModels */,
 				A281BAD525A76E5B007FD0F4 /* Model */,
-				A28BB9C925A76578006B5B37 /* DetalhesFilme */,
 				A2E4B2B925A73EB800A86821 /* Filmes */,
 				A281BAD825A78060007FD0F4 /* Resources */,
 				A2844A1C25AE1CA400021540 /* Helper */,

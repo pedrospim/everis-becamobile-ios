@@ -17,7 +17,7 @@ class FilmeDetalhesViewModel {
     // MARK: - Properts
     private let client: FilmeAPIProtocol
     var viewData: Bindable<FilmeViewData?> = Bindable(nil)
-    var delegate: DetalhesFilmeViewModelDelegate?
+    //var delegate: DetalhesFilmeViewModelDelegate?
     
     // MARK: - Constructors
     init(client: FilmeAPIProtocol = FilmeAPI()) {
@@ -25,9 +25,10 @@ class FilmeDetalhesViewModel {
     }
     
     // MARK: - Methods
-    func loadMovie() {
-        client.pegarDetalhesFilme(codFilme: 464052) { (filme) in
-            self.delegate?.reloadData(filme: FilmeViewData(model: filme))
+    func loadMovie(codFilme: Int) {
+        client.pegarDetalhesFilme(codFilme: codFilme) { (filme) in
+            self.viewData.value = FilmeViewData(model: filme)
+            //self.delegate?.reloadData(filme: FilmeViewData(model: filme))
         }
     }
     

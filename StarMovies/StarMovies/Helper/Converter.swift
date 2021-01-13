@@ -14,16 +14,17 @@ class Converter : NSObject {
     
     func ConverterParaDolares(_ valor: Int) -> String{
     currencyFormatter.usesGroupingSeparator = true
-    currencyFormatter.numberStyle = .currency
-    currencyFormatter.locale = Locale.current
+    currencyFormatter.numberStyle =  .currency
+    currencyFormatter.currencySymbol = "$"
     
         if valor == 0 {
             return "Desconhecido"
         }else{
             let valorFormatado = NSNumber(integerLiteral: valor)
             
-            if let `valorFormatado` = currencyFormatter.string(from: valorFormatado) {
-                return "\(valorFormatado)"
+            if let valorFinal = currencyFormatter.string(from: valorFormatado) {
+                print(valorFinal)
+                return "\(valorFinal)"
             }
         }
         return "Desconhecido"
