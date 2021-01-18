@@ -53,9 +53,9 @@ class Filme: NSObject {
         guard let caminhoImagemBg = dicionario["backdrop_path"] as? String else { return }
         self.caminhoImagemBg = caminhoImagemBg
         
-        guard let DicionarioDeGeneros = dicionario["genres"] as? Array<Dictionary<String, Any>> else { return }
+        guard let dicionarioDeGeneros = dicionario["genres"] as? Array<Dictionary<String, Any>> else { return }
         
-        for genero in DicionarioDeGeneros {
+        for genero in dicionarioDeGeneros {
             guard let nomeGenero = genero["name"] as? String else { return }
             
             if generos == String(""){
@@ -66,9 +66,9 @@ class Filme: NSObject {
         }
         
         guard var nota = dicionario["vote_average"] as? Double else { return }
-        nota = nota * 10
+        nota *= 10
         nota = Double(nota).rounded()
-        nota = nota / 10
+        nota /=  10
         self.nota = String(nota)
         
         

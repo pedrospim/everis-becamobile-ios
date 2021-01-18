@@ -59,7 +59,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let celula = collectionView.dequeueReusableCell(withReuseIdentifier: "celulaFilme", for: indexPath) as! FilmeCollectionViewCell
+        guard let celula = collectionView.dequeueReusableCell(withReuseIdentifier: "celulaFilme", for: indexPath) as? FilmeCollectionViewCell else { return UICollectionViewCell()}
         celula.bind()
         celula.viewModel.setarViewData(filme: listaTendenciaFilmes[indexPath.row])
         celula.aplicarSombrar()
@@ -84,7 +84,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionFooter {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CollectionReusableView", for: indexPath) as! FilmesFooterCollectionReusableView
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CollectionReusableView", for: indexPath) as? FilmesFooterCollectionReusableView else { return UICollectionReusableView()}
             
             self.buttonAnterior = view.buttonAnterior
             
@@ -103,7 +103,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
         guard let codigoFilme = viewModel.viewData.value?.resultados[indexPath.item].id else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "detalhesFilme") as! DetalhesFilmeViewController
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "detalhesFilme") as? DetalhesFilmeViewController else {return}
 
             controller.codFilme = codigoFilme
             self.navigationController?.pushViewController(controller, animated: true)
@@ -111,7 +111,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     }
     
     @IBAction func buttonIrParaAnterior(_ sender: UIButton) {
-        paginaAtual = paginaAtual - 1
+        paginaAtual -= 1
         viewModel.loadTendencias(pagina: paginaAtual)
         colecaoFilmes.setContentOffset(CGPoint(x:0,y:0), animated: true)
         
@@ -124,7 +124,7 @@ class TendenciasFilmesViewController: UIViewController, UICollectionViewDataSour
     
     @IBAction func buttonProximo(_ sender: UIButton) {
         
-        paginaAtual = paginaAtual + 1
+        paginaAtual += 1
         viewModel.loadTendencias(pagina: paginaAtual)
         colecaoFilmes.setContentOffset(CGPoint(x:0,y:0), animated: true)
         

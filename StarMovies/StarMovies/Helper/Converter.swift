@@ -12,7 +12,7 @@ class Converter : NSObject {
     
     let currencyFormatter = NumberFormatter()
     
-    func ConverterParaDolares(_ valor: Int) -> String{
+    func converterParaDolares(_ valor: Int) -> String{
     currencyFormatter.usesGroupingSeparator = true
     currencyFormatter.numberStyle =  .currency
     currencyFormatter.currencySymbol = "$"

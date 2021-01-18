@@ -40,9 +40,9 @@ extension FilmeViewData : FilmeViewDataType {
     
     var nota: String {
         guard var nota = model.voteAverage else { return "Desconhecido"}
-        nota = nota * 10
+        nota *= 10
         nota = Double(nota).rounded()
-        nota = nota / 10
+        nota /= 10
         return String(nota)
     }
     
@@ -59,12 +59,12 @@ extension FilmeViewData : FilmeViewDataType {
     var budget: String {
         
         guard let budget = model.budget else { return "Desconhecido"}
-        return Converter().ConverterParaDolares(budget)
+        return Converter().converterParaDolares(budget)
     }
     
     var revenue: String {
         guard let revenue = model.revenue else { return "Desconhecido"}
-        return Converter().ConverterParaDolares(revenue)
+        return Converter().converterParaDolares(revenue)
     }
     
     var generos: String {

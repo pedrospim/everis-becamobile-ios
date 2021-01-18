@@ -5,6 +5,7 @@
 //  Created by Pedro Spim Costa on 12/01/21.
 //  Copyright © 2021 Pedro Spim Costa. All rights reserved.
 //
+// swiftlint:disable identifier_name
 
 import Foundation
 
